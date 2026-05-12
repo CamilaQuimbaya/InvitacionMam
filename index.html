@@ -171,9 +171,9 @@
     /* ── INTRO OVERLAY ───────────────────────── */
     @keyframes introReveal {
       0%   { opacity: 0; transform: scale(.92); }
-      30%  { opacity: 1; transform: scale(1); }
-      75%  { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(1.04); }
+      18%  { opacity: 1; transform: scale(1); }
+      85%  { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.03); }
     }
     @keyframes introSlideUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -189,7 +189,7 @@
       background-size: cover; background-position: center;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 0;
-      animation: introFadeOut .7s 2.8s ease-in-out forwards;
+      animation: introFadeOut .9s 5s ease-in-out forwards;
     }
     .intro-fifty {
       font-family: 'Great Vibes', cursive;
@@ -200,7 +200,7 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
       filter: drop-shadow(0 4px 16px rgba(180,80,100,.25));
-      animation: introReveal 2.8s ease-in-out forwards,
+      animation: introReveal 5s ease-in-out forwards,
                  nameShimmer 4s 1s ease-in-out infinite;
     }
     .intro-name {
@@ -1255,7 +1255,7 @@
 /* ── INTRO: quitar con animación o tap ── */
 const introEl = document.getElementById('introOverlay');
 function dismissIntro() {
-  introEl.style.animation = 'introFadeOut .4s ease-in-out forwards';
+  introEl.style.animation = 'introFadeOut .5s ease-in-out forwards';
   introEl.addEventListener('animationend', () => introEl.remove(), { once: true });
 }
 introEl.addEventListener('animationend', dismissIntro, { once: true });
