@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f9c5d1" />
+  <title>50 Años de Sandra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* ── RESET ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:    #e8a0b0;
+      --blush:   #f7dde3;
+      --coral:   #d4697a;
+      --cream:   #fdf6f0;
+      --darkrose:#b04d62;
+      --green:   #8aab7e;
+      --text:    #4a2c35;
+      --gold:    #f9c878;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background-color: var(--cream);
+      background-image:
+        linear-gradient(160deg, rgba(249,197,209,.72) 0%, rgba(253,240,243,.55) 50%, rgba(252,232,208,.65) 100%),
+        url('https://i.pinimg.com/736x/1c/18/d7/1c18d7e09f845eee3d741afcb0d3c48f.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-attachment: scroll; /* fixed causa bugs en iOS */
+      color: var(--text);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, a {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    /* ── KEYFRAMES ──────────────────────────────── */
+    @keyframes cardEntrance {
+      from { opacity: 0; transform: translateY(36px) scale(.97); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(.7); }
+      60%  { transform: scale(1.08); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes nameShimmer {
+      0%,100% { background-position: 0%; }
+      50%     { background-position: 100%; }
+    }
+    @keyframes badgePulse {
+      0%,100% { box-shadow: 0 4px 20px rgba(180,80,100,.32); }
+      50%     { box-shadow: 0 4px 32px rgba(180,80,100,.58); }
+    }
+    @keyframes sparkletwinkle {
+      0%,100% { opacity:1;  transform:scale(1) rotate(0deg); }
+      50%     { opacity:.45; transform:scale(.6) rotate(20deg); }
+    }
+    @keyframes btnShimmer {
+      0%       { left:-100%; }
+      30%,100% { left:200%; }
+    }
+    @keyframes iconBounce {
+      0%   { transform:scale(1); }
+      35%  { transform:scale(1.3) translateY(-4px); }
+      65%  { transform:scale(.92) translateY(1px); }
+      100% { transform:scale(1); }
+    }
+    @keyframes iconWiggle {
+      0%,100%{ transform:rotate(0); }
+      25%    { transform:rotate(-12deg) scale(1.15); }
+      75%    { transform:rotate(12deg) scale(1.15); }
+    }
+    @keyframes rippleAnim {
+      from { transform:scale(0); opacity:1; }
+      to   { transform:scale(2.8); opacity:0; }
+    }
+    @keyframes floatHeart {
+      from { opacity:1; transform:translateY(0) scale(1); }
+      to   { opacity:0; transform:translateY(-130px) scale(.15) rotate(20deg); }
+    }
+    @keyframes confettiBurst {
+      0%   { transform:translate(0,0) rotate(0) scale(1); opacity:1; }
+      100% { transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(0); opacity:0; }
+    }
+    @keyframes successBounce {
+      0%   { opacity:0; transform:scale(.4) rotate(-12deg); }
+      55%  { transform:scale(1.12) rotate(4deg); }
+      80%  { transform:scale(.96) rotate(-2deg); }
+      100% { opacity:1; transform:scale(1) rotate(0); }
+    }
+    @keyframes successFadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:none; }
+    }
+    @keyframes shake {
+      0%,100%{ transform:translateX(0); }
+      20%    { transform:translateX(-7px); }
+      40%    { transform:translateX(7px); }
+      60%    { transform:translateX(-4px); }
+      80%    { transform:translateX(4px); }
+    }
+    @keyframes fall {
+      0%   { transform:translateY(0) rotate(0deg) scale(1); opacity:.75; }
+      100% { transform:translateY(110vh) rotate(420deg) scale(.6); opacity:0; }
+    }
+    @keyframes sparkleFade {
+      0%   { opacity:.8; transform:translate(-50%,-50%) scale(1); }
+      100% { opacity:0;  transform:translate(-50%,-50%) scale(0); }
+    }
+    @keyframes heroPetal {
+      0%,100% { transform: translateY(0) rotate(var(--base-rot)); }
+      50%     { transform: translateY(-5px) rotate(var(--base-rot)); }
+    }
+
+    /* ── FLORES (Uiverse by tako143, adaptadas) ── */
+
+    /* pétalos de las flores CSS: renombrado a .fpetal para no
+       colisionar con .petal de los pétalos de fondo */
+    .flower {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .fpetal {
+      position: absolute;
+      background: linear-gradient(180deg, #fcdbdf, #d4697a);
+      border-radius: 50%;
+    }
+    .fcenter {
+      position: absolute;
+      background: radial-gradient(circle at 40% 35%, #fde8c8, #f9c878);
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: 0 2px 6px rgba(180,80,100,.2);
+    }
+    /* rotaciones */
+    .fpetal1 { transform: rotate(0deg)   translateY(-50%); animation-delay:.1s; }
+    .fpetal2 { transform: rotate(45deg)  translateY(-50%); animation-delay:.2s; }
+    .fpetal3 { transform: rotate(90deg)  translateY(-50%); animation-delay:.3s; }
+    .fpetal4 { transform: rotate(135deg) translateY(-50%); animation-delay:.4s; }
+    .fpetal5 { transform: rotate(180deg) translateY(-50%); animation-delay:.5s; }
+    .fpetal6 { transform: rotate(225deg) translateY(-50%); animation-delay:.6s; }
+    .fpetal7 { transform: rotate(270deg) translateY(-50%); animation-delay:.7s; }
+    .fpetal8 { transform: rotate(315deg) translateY(-50%); animation-delay:.8s; }
+
+    /* tamaño HERO (en header) */
+    .flower-hero {
+      width: 148px; height: 148px;
+      margin: 0 auto 4px;
+      cursor: pointer;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .flower-hero .fpetal {
+      width: 24px; height: 54px;
+    }
+    .flower-hero .fcenter {
+      width: 28px; height: 28px;
+    }
+
+    /* tamaño SMALL (en fila) */
+    .flower-sm {
+      width: 54px; height: 54px;
+      cursor: pointer;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .flower-sm .fpetal {
+      width: 10px; height: 22px;
+    }
+    .flower-sm .fcenter {
+      width: 11px; height: 11px;
+    }
+
+    /* animación de color en hover/active */
+    @keyframes changeColor {
+      0%   { background: linear-gradient(180deg, #fcdbdf, #d4697a); }
+      25%  { background: linear-gradient(180deg, #fcd2e3, #b04d62); }
+      50%  { background: linear-gradient(180deg, #fabefc, #c34ec7); }
+      75%  { background: linear-gradient(180deg, #f7d6d6, #fd6a6a); }
+      100% { background: linear-gradient(180deg, #fcd3fc, #e844f7); }
+    }
+    @keyframes rotateFlowerHero {
+      0%   { transform: scale(1)    rotate(0deg); }
+      50%  { transform: scale(1.12) rotate(360deg); }
+      100% { transform: scale(1)    rotate(0deg); }
+    }
+    @keyframes rotateFlowerSm {
+      0%   { transform: scale(1)    rotate(0deg); }
+      50%  { transform: scale(1.25) rotate(360deg); }
+      100% { transform: scale(1)    rotate(0deg); }
+    }
+
+    /* desktop hover */
+    @media (hover:hover) {
+      .flower-hero:hover .fpetal {
+        animation: changeColor 8s reverse infinite;
+      }
+      .flower-hero:hover {
+        animation: rotateFlowerHero 8s ease infinite;
+      }
+      .flower-sm:hover .fpetal {
+        animation: changeColor 6s reverse infinite;
+      }
+      .flower-sm:hover {
+        animation: rotateFlowerSm 6s ease infinite;
+      }
+    }
+    /* mobile tap */
+    .flower-hero:active { transform: scale(1.1) rotate(15deg); }
+    .flower-sm:active   { transform: scale(1.2) rotate(20deg); }
+
+    /* ── FONDO: PÉTALOS CAÍDOS ─────────────────── */
+    .petal-container {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 10; overflow: hidden;
+    }
+    .petal {
+      position: absolute; top: -50px;
+      animation: fall linear infinite;
+    }
+
+    /* ── CURSOR SPARKLE (desktop) ─────────────── */
+    .cursor-sparkle {
+      position: fixed; pointer-events: none; z-index: 9998;
+      border-radius: 50%; transform: translate(-50%,-50%);
+      animation: sparkleFade .55s ease-out forwards;
+    }
+
+    /* ── SCROLL REVEAL ───────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s cubic-bezier(.34,1.2,.64,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── CARD ────────────────────────────────── */
+    .card {
+      position: relative; z-index: 1;
+      margin: 10px 10px 32px;
+      border-radius: 30px;
+      background: transparent;
+      box-shadow:
+        0 8px 40px rgba(180,80,100,.22),
+        0 2px 8px rgba(180,80,100,.12);
+      border: 1px solid rgba(255,255,255,.5);
+      overflow: visible;
+      animation: cardEntrance .9s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    /* ── HEADER ──────────────────────────────── */
+    .header {
+      background: linear-gradient(165deg, #f9c0d0 0%, #f5d5e0 45%, #fce5d0 100%);
+      padding: 40px 24px 32px;
+      text-align: center;
+      position: relative;
+      overflow: visible;
+      border-radius: 30px 30px 0 0;
+    }
+    /* orbes decorativos de fondo */
+    .header::before {
+      content: '';
+      position: absolute;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(255,255,255,.35), transparent 70%);
+      top: -60px; left: -60px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(255,255,255,.25), transparent 70%);
+      bottom: -40px; right: -40px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .subtitle-top {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 500;
+      font-style: normal;
+      font-size: .75rem;
+      color: var(--darkrose);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      opacity: .8;
+      animation: fadeUp .6s .3s both;
+    }
+
+    /* flores hero */
+    .hero-flower-wrap {
+      display: block;
+      text-align: center;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      margin-bottom: -30px;
+      animation: fadeUp .7s .4s both;
+    }
+
+    .fifty-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      line-height: 1;
+      isolation: isolate;
+    }
+
+    .fifty-five {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(7rem, 32vw, 10rem);
+      font-weight: 400;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--darkrose), var(--coral), #e0556e, var(--darkrose));
+      background-size: 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* sin filter — crea stacking context y rompe z-index */
+      animation: nameShimmer 5s 1.2s ease-in-out infinite;
+      letter-spacing: -0.12em;
+      margin-bottom: -8px;
+      order: -1;   /* aparece a la izquierda visualmente */
+      z-index: 2;  /* sobre la flor — funciona en flex sin position */
+    }
+
+    .fifty-wrap .flower-hero {
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(4rem, 18vw, 6rem);
+      font-weight: 400;
+      line-height: 1.05;
+      margin-top: 4px;
+      background: linear-gradient(135deg, var(--darkrose), var(--coral), #e0556e, var(--darkrose));
+      background-size: 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 8px rgba(180,80,100,.18));
+      animation: fadeUp .7s .55s both, nameShimmer 5s 1.2s ease-in-out infinite;
+    }
+
+    .years-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 14px;
+      background: linear-gradient(135deg, var(--coral), var(--darkrose));
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: 300;
+      padding: 10px 22px;
+      border-radius: 50px;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(180,80,100,.35);
+      animation: scaleIn .6s cubic-bezier(.34,1.56,.64,1) .8s both,
+                 badgePulse 3s 1.5s ease-in-out infinite;
+    }
+    .years-badge:active { transform: scale(.96); }
+    .years-badge .sparkle { width: 13px; height: 13px; fill: #ffe5a0; flex-shrink: 0; }
+    .years-badge .sparkle:first-child { animation: sparkletwinkle 2s .2s ease-in-out infinite; }
+    .years-badge .sparkle:last-child  { animation: sparkletwinkle 2s .9s ease-in-out infinite; }
+
+    /* fila de flores small */
+    .flowers-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      margin-top: 18px;
+      animation: fadeUp .6s 1s both;
+    }
+
+    /* ── BODY ─────────────────────────────────── */
+    .body {
+      padding: 30px 22px 26px;
+      background: rgba(255,255,255,.19);
+      backdrop-filter: blur(7.1px);
+      -webkit-backdrop-filter: blur(7.1px);
+    }
+
+    .invitation-text {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.2rem;
+      color: var(--darkrose);
+      line-height: 2;
+      margin-bottom: 28px;
+      letter-spacing: .3px;
+    }
+    .invitation-text strong {
+      font-family: 'Great Vibes', cursive;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.9rem;
+      color: var(--darkrose);
+      display: block;
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    /* ── DETAIL CARDS ─────────────────────────── */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .detail-card {
+      background: rgba(255,255,255,.19);
+      backdrop-filter: blur(7.1px);
+      -webkit-backdrop-filter: blur(7.1px);
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: 0 4px 30px rgba(0,0,0,.1);
+      border-radius: 22px;
+      padding: 20px 14px 18px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s cubic-bezier(.34,1.4,.64,1), box-shadow .25s;
+      cursor: default;
+      -webkit-user-select: none; user-select: none;
+    }
+    /* franja de color en la parte superior */
+    .detail-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--rose), var(--coral));
+      border-radius: 22px 22px 0 0;
+    }
+    .detail-card:active {
+      transform: scale(.96);
+      box-shadow: 0 2px 8px rgba(180,80,100,.1);
+    }
+
+    /* círculo del ícono */
+    .detail-icon-wrap {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 11px;
+      box-shadow: 0 3px 14px rgba(212,105,122,.2), inset 0 1px 2px rgba(255,255,255,.95);
+      border: 1.5px solid rgba(255,255,255,.85);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .detail-card:active .detail-icon-wrap { transform: scale(1.1); }
+    .detail-icon-wrap i { font-size: 1.35rem; color: var(--coral); }
+
+    .detail-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: .6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--coral);
+      margin-bottom: 5px;
+      opacity: .9;
+    }
+    .detail-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* card de lugar (ancho completo) */
+    .detail-card.full {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      text-align: left;
+    }
+    .detail-card.full .detail-icon-wrap {
+      flex-shrink: 0;
+      margin: 0;
+    }
+    .detail-card.full .detail-label { margin-bottom: 3px; }
+
+    /* ── DIVISOR ─────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 0 28px;
+    }
+    .divider .flower-sm { cursor: default; }
+    .divider span { color: var(--rose); font-size: .8rem; letter-spacing: 3px; }
+
+    /* ── FORMULARIO ──────────────────────────── */
+    .rsvp-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.65rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--darkrose);
+      text-align: center;
+      letter-spacing: .5px;
+      margin-bottom: 5px;
+    }
+    .rsvp-sub {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: 'Raleway', sans-serif;
+      font-size: .78rem;
+      font-weight: 400;
+      letter-spacing: .5px;
+      color: #a07080;
+      margin-bottom: 22px;
+    }
+    .rsvp-sub i { color: var(--rose); }
+
+    .form-field { position: relative; margin-bottom: 16px; }
+
+    /* font-size 1rem = 16px → evita zoom automático en iOS */
+    .form-field input,
+    .form-field .select-box {
+      width: 100%;
+      padding: 24px 18px 9px;
+      min-height: 60px;
+      border: 1.5px solid rgba(255,255,255,.7);
+      border-radius: 18px;
+      font-size: 1rem;
+      font-family: 'Raleway', sans-serif;
+      color: var(--text);
+      background: rgba(255,255,255,.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      outline: none;
+      -webkit-appearance: none; appearance: none;
+      transition: border-color .25s, box-shadow .25s, background .25s;
+    }
+    .form-field input:focus,
+    .form-field .select-box:focus {
+      border-color: var(--coral);
+      box-shadow: 0 0 0 4px rgba(212,105,122,.12);
+      background: #fff;
+    }
+
+    /* label flotante */
+    .form-field label {
+      position: absolute;
+      left: 18px; top: 50%;
+      transform: translateY(-50%);
+      font-size: .92rem;
+      color: #b08090;
+      pointer-events: none;
+      transition: top .2s, transform .2s, font-size .2s, color .2s;
+    }
+    .form-field input:focus            ~ label,
+    .form-field input:not(:placeholder-shown) ~ label,
+    .form-field.has-value              label {
+      top: 10px; transform: none;
+      font-size: .63rem; color: var(--coral);
+      letter-spacing: 1.4px; text-transform: uppercase;
+    }
+
+    /* línea de foco */
+    .form-field::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 50%;
+      width: 0; height: 2.5px;
+      background: linear-gradient(90deg, var(--rose), var(--darkrose));
+      border-radius: 3px;
+      transition: width .3s, left .3s;
+    }
+    .form-field:focus-within::after { width: 100%; left: 0; }
+
+    /* select flecha */
+    .select-wrapper { position: relative; }
+    .select-wrapper > i {
+      position: absolute; right: 18px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--coral); pointer-events: none; font-size: .8rem;
+      transition: transform .25s;
+    }
+    .select-wrapper select:focus + i { transform: translateY(-50%) rotate(180deg); }
+
+    .shake { animation: shake .4s; }
+
+    /* ── BOTÓN ───────────────────────────────── */
+    .btn-confirm {
+      width: 100%;
+      padding: 18px 20px;
+      min-height: 60px;
+      background: linear-gradient(135deg, var(--coral), var(--darkrose));
+      color: #fff;
+      border: none;
+      border-radius: 18px;
+      font-size: 1.15rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: .8px;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 6px 24px rgba(180,80,100,.4), 0 2px 6px rgba(180,80,100,.2);
+      transition: transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      position: relative; overflow: hidden;
+    }
+    .btn-confirm::after {
+      content: ''; position: absolute;
+      top: 0; left: -100%; width: 55%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      animation: btnShimmer 3.5s 2s infinite;
+    }
+    .btn-confirm:active {
+      transform: scale(.97);
+      box-shadow: 0 2px 10px rgba(180,80,100,.3);
+    }
+    .btn-confirm .whatsapp-ico { width: 22px; height: 22px; flex-shrink: 0; }
+
+    .ripple {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,.3); pointer-events: none;
+      animation: rippleAnim .65s linear forwards;
+    }
+
+    /* ── ÉXITO ──────────────────────────────── */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(255,255,255,.19);
+      backdrop-filter: blur(7.1px);
+      -webkit-backdrop-filter: blur(7.1px);
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: 0 4px 30px rgba(0,0,0,.1);
+      border-radius: 22px;
+      margin-top: 18px;
+    }
+    .success-icon {
+      display: flex; justify-content: center; margin-bottom: 14px;
+    }
+    .success-icon svg {
+      width: 68px; height: 68px;
+      animation: successBounce .7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .success-msg p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--darkrose);
+      font-size: 1.2rem;
+      line-height: 1.8;
+      letter-spacing: .3px;
+      animation: successFadeUp .5s .3s both;
+    }
+
+    .float-heart, .confetti-piece { pointer-events:none; z-index:9999; position:fixed; }
+    .float-heart    { animation: floatHeart var(--dur) var(--delay) ease-out forwards; }
+    .confetti-piece { animation: confettiBurst var(--dur) var(--delay) cubic-bezier(.25,.46,.45,.94) forwards; }
+
+    /* ── FOOTER ──────────────────────────────── */
+    .footer {
+      background: linear-gradient(160deg, #f7c0cf 0%, #f5d8e2 100%);
+      padding: 24px 22px calc(24px + env(safe-area-inset-bottom));
+      text-align: center;
+      border-radius: 0 0 30px 30px;
+    }
+    .footer-flowers {
+      display: flex; justify-content: center; align-items: center;
+      gap: 8px; margin-bottom: 12px;
+    }
+    .footer p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--darkrose);
+      line-height: 1.8;
+      letter-spacing: .4px;
+    }
+
+    /* ── DESKTOP ─────────────────────────────── */
+    @media (min-width: 600px) {
+      body { background-attachment: fixed; }
+      .card { margin: 40px auto 60px; max-width: 660px; background: transparent; }
+      .header { padding: 52px 32px 40px; }
+      .flower-hero { width: 160px; height: 160px; }
+      .flower-hero .fpetal { width: 26px; height: 58px; }
+      .flower-hero .fcenter { width: 30px; height: 30px; }
+      .body { padding: 40px 32px 30px; }
+      .details-grid { gap: 16px; margin-bottom: 36px; }
+      .detail-card { padding: 24px 18px 20px; border-radius: 24px; }
+      .detail-card.full { padding: 20px 24px; }
+      .detail-icon-wrap { width: 54px; height: 54px; }
+      .detail-icon-wrap i { font-size: 1.5rem; }
+      .form-field input, .form-field .select-box { border-radius: 16px; }
+      .btn-confirm { border-radius: 16px; }
+      .footer { padding: 28px 32px; }
+
+      /* hover solo desktop */
+      .detail-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 14px 32px rgba(180,80,100,.15);
+      }
+      .detail-card:hover .detail-icon-wrap { transform: scale(1.12); }
+      .btn-confirm:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 12px 32px rgba(180,80,100,.45);
+      }
+      .btn-confirm:hover .whatsapp-ico { animation: iconWiggle .4s; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="petal-container" id="petals"></div>
+
+<div class="card">
+
+  <!-- ═══ HEADER ═══════════════════════════════ -->
+  <div class="header">
+    <p class="subtitle-top">Te invitamos a celebrar</p>
+
+    <!-- "50" = número + flor -->
+    <div class="hero-flower-wrap">
+      <div class="fifty-wrap">
+        <div class="flower flower-hero" id="heroFlower">
+        <div class="fpetal fpetal1"></div>
+        <div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div>
+        <div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div>
+        <div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div>
+        <div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <span class="fifty-five">5</span>
+      </div><!-- /fifty-wrap -->
+    </div>
+
+    <h1 class="name">Sandra</h1>
+
+    <div class="years-badge">
+      <svg class="sparkle" viewBox="0 0 24 24"><path d="M12 2 13.8 9.2 21 12 13.8 14.8 12 22 10.2 14.8 3 12 10.2 9.2Z"/></svg>
+      50 años de vida y amor
+      <svg class="sparkle" viewBox="0 0 24 24"><path d="M12 2 13.8 9.2 21 12 13.8 14.8 12 22 10.2 14.8 3 12 10.2 9.2Z"/></svg>
+    </div>
+
+    <!-- FLORES SMALL ROW -->
+    <div class="flowers-row">
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <div class="flower flower-sm" style="--delay-offset:.15s">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <div class="flower flower-sm" style="--delay-offset:.3s">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BODY ══════════════════════════════════ -->
+  <div class="body">
+
+    <p class="invitation-text reveal">
+      Con el corazón lleno de alegría<br>
+      te invitamos a compartir este momento<br>
+      tan especial en la vida de nuestra querida<br>
+      <strong>Sandra</strong>
+    </p>
+
+    <!-- CARDS DE DETALLES -->
+    <div class="details-grid">
+      <div class="detail-card reveal" style="transition-delay:.05s">
+        <div class="detail-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
+        <div class="detail-label">Fecha</div>
+        <div class="detail-value">Domingo<br>17 Mayo 2026</div>
+      </div>
+
+      <div class="detail-card reveal" style="transition-delay:.12s">
+        <div class="detail-icon-wrap"><i class="fa-regular fa-clock"></i></div>
+        <div class="detail-label">Hora</div>
+        <div class="detail-value">1:30 pm</div>
+      </div>
+
+      <div class="detail-card full reveal" style="transition-delay:.19s">
+        <div class="detail-icon-wrap"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <div class="detail-label">Lugar</div>
+          <div class="detail-value">Restaurante La Molienda de Tavo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIVISOR CON FLORECITAS -->
+    <div class="divider reveal" style="transition-delay:.26s">
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <span>· · ·</span>
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <span>· · ·</span>
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+    </div>
+
+    <!-- RSVP -->
+    <div class="reveal" style="transition-delay:.33s">
+      <h2 class="rsvp-title">Confirma tu asistencia</h2>
+      <p class="rsvp-sub">
+        <i class="fa-regular fa-envelope"></i>
+        Se abrirá WhatsApp — solo envía el mensaje
+      </p>
+
+      <form id="rsvpForm" onsubmit="confirmar(event)" novalidate>
+        <div class="form-field">
+          <input type="text" id="nombre" placeholder=" "
+                 autocomplete="name" inputmode="text" enterkeyhint="next" />
+          <label for="nombre">Tu nombre completo</label>
+        </div>
+
+        <div class="form-field has-value">
+          <div class="select-wrapper">
+            <select id="asistentes" class="select-box">
+              <option value="1">Solo yo (1 persona)</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 o más personas</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <label>¿Cuántas personas van?</label>
+        </div>
+
+        <button type="submit" class="btn-confirm" id="btnConfirm">
+          <svg class="whatsapp-ico" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Confirmar por WhatsApp
+        </button>
+      </form>
+
+      <!-- ÉXITO -->
+      <div class="success-msg" id="successMsg">
+        <div class="success-icon">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="60" cy="20" rx="9" ry="17" fill="#e8a0b0" opacity=".7"/>
+            <ellipse cx="60" cy="100" rx="9" ry="17" fill="#e8a0b0" opacity=".7"/>
+            <ellipse cx="20" cy="60" rx="17" ry="9" fill="#e8a0b0" opacity=".7"/>
+            <ellipse cx="100" cy="60" rx="17" ry="9" fill="#e8a0b0" opacity=".7"/>
+            <ellipse cx="29" cy="29" rx="9" ry="17" fill="#d4697a" opacity=".65" transform="rotate(-45 29 29)"/>
+            <ellipse cx="91" cy="29" rx="9" ry="17" fill="#d4697a" opacity=".65" transform="rotate(45 91 29)"/>
+            <ellipse cx="29" cy="91" rx="9" ry="17" fill="#d4697a" opacity=".65" transform="rotate(45 29 91)"/>
+            <ellipse cx="91" cy="91" rx="9" ry="17" fill="#d4697a" opacity=".65" transform="rotate(-45 91 91)"/>
+            <circle cx="60" cy="60" r="28" fill="url(#sg)"/>
+            <polyline points="46,61 55,70 74,50" fill="none" stroke="#fff" stroke-width="5.5"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#d4697a"/>
+                <stop offset="100%" stop-color="#b04d62"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p>¡Gracias por confirmar!<br>Se abrió WhatsApp con tu confirmación.<br><em>¡Nos vemos el 17 de mayo!</em></p>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- ═══ FOOTER ════════════════════════════════ -->
+  <div class="footer">
+    <div class="footer-flowers">
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+      <div class="flower flower-sm">
+        <div class="fpetal fpetal1"></div><div class="fpetal fpetal2"></div>
+        <div class="fpetal fpetal3"></div><div class="fpetal fpetal4"></div>
+        <div class="fpetal fpetal5"></div><div class="fpetal fpetal6"></div>
+        <div class="fpetal fpetal7"></div><div class="fpetal fpetal8"></div>
+        <div class="fcenter"></div>
+      </div>
+    </div>
+    <p>Con todo el amor del mundo<br><em>¡Te esperamos para celebrar juntos!</em></p>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+/* ── PÉTALOS DE FONDO ── */
+const isDesktop = window.matchMedia('(min-width:600px)').matches;
+const pColors = ['#e8a0b0','#f7c5d0','#d4697a','#f9b8c8','#c77a8a','#f0d0d8'];
+const pc = document.getElementById('petals');
+for (let i = 0; i < (isDesktop ? 80 : 50); i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  const s = 8 + Math.random() * 18;
+  p.style.cssText = [
+    `left:${Math.random()*100}%`,
+    `width:${s}px`,`height:${s}px`,
+    `background:${pColors[Math.floor(Math.random()*pColors.length)]}`,
+    `animation-duration:${5+Math.random()*10}s`,
+    `animation-delay:${Math.random()*8}s`,
+    `border-radius:${Math.random()>.5?'60% 0 60% 0':'0 60% 0 60%'}`,
+    `opacity:${.45+Math.random()*.5}`
+  ].join(';');
+  pc.appendChild(p);
+}
+
+/* ── SCROLL REVEAL ── */
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, { threshold: .14 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ── CURSOR SPARKLE (desktop) ── */
+if (isDesktop && window.matchMedia('(hover:hover)').matches) {
+  const sc = ['#e8a0b0','#d4697a','#f9c878','#b04d62','#f7c5d0'];
+  let lt = 0;
+  document.addEventListener('mousemove', e => {
+    const n = Date.now();
+    if (n - lt < 80 || Math.random() > .55) return;
+    lt = n;
+    const sp = document.createElement('div');
+    sp.className = 'cursor-sparkle';
+    const sz = 5 + Math.random() * 6;
+    sp.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;width:${sz}px;height:${sz}px;background:${sc[Math.floor(Math.random()*sc.length)]};`;
+    document.body.appendChild(sp);
+    setTimeout(() => sp.remove(), 570);
+  });
+}
+
+/* ── RIPPLE EN BOTÓN ── */
+document.getElementById('btnConfirm').addEventListener('pointerdown', function(e) {
+  const r = this.getBoundingClientRect();
+  const sz = Math.max(r.width, r.height);
+  const rip = document.createElement('span');
+  rip.className = 'ripple';
+  rip.style.cssText = `width:${sz}px;height:${sz}px;left:${e.clientX-r.left-sz/2}px;top:${e.clientY-r.top-sz/2}px;`;
+  this.appendChild(rip);
+  setTimeout(() => rip.remove(), 700);
+});
+
+/* ── BURST AL CONFIRMAR ── */
+function burst(x, y) {
+  const cc = ['#e8a0b0','#d4697a','#f9c878','#b04d62','#f7dde3','#8aab7e','#f7c5d0'];
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('div');
+    h.className = 'float-heart';
+    const dur = (1+Math.random()*.7).toFixed(2), del = (Math.random()*.4).toFixed(2);
+    h.style.cssText = `left:${x+(Math.random()-.5)*90}px;top:${y}px;font-size:${13+Math.random()*13}px;color:${Math.random()>.5?'#e8a0b0':'#d4697a'};--dur:${dur}s;--delay:${del}s;`;
+    h.textContent = '♥';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), (parseFloat(dur)+parseFloat(del))*1000+150);
+  }
+  for (let i = 0; i < 42; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    const color = cc[Math.floor(Math.random()*cc.length)];
+    const sz = 5+Math.random()*8, ang = Math.random()*360, dist = 60+Math.random()*120;
+    const dur = (.65+Math.random()*.7).toFixed(2), del = (Math.random()*.3).toFixed(2);
+    const tx = (Math.cos(ang*Math.PI/180)*dist).toFixed(1);
+    const ty = (Math.sin(ang*Math.PI/180)*dist).toFixed(1);
+    const br = Math.random()>.4?'50%':(Math.random()>.5?'2px':'60% 0 60% 0');
+    c.style.cssText = `left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${color};border-radius:${br};--tx:${tx}px;--ty:${ty}px;--rot:${Math.floor(Math.random()*720)}deg;--dur:${dur}s;--delay:${del}s;`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), (parseFloat(dur)+parseFloat(del))*1000+200);
+  }
+}
+
+/* ── CONFIRMAR ── */
+function confirmar(e) {
+  e.preventDefault();
+  const el = document.getElementById('nombre');
+  const nombre = el.value.trim();
+  if (!nombre) {
+    el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); el.focus(); return;
+  }
+  const cantidad = document.getElementById('asistentes').value;
+  const personas = cantidad === '1' ? '1 persona' : `${cantidad} personas`;
+  const texto = `¡Hola! Confirmo mi asistencia a los 50 años de Sandra.\n\nMi nombre es: *${nombre}*\nAsistiremos: *${personas}*\n\n¡Nos vemos el 17 de mayo!`;
+  window.open(`https://wa.me/573208278004?text=${encodeURIComponent(texto)}`, '_blank');
+
+  const btn = document.getElementById('btnConfirm');
+  const r = btn.getBoundingClientRect();
+  burst(r.left + r.width/2, r.top + r.height/2);
+
+  const success = document.getElementById('successMsg');
+  success.style.display = 'block';
+  document.getElementById('rsvpForm').style.cssText = 'opacity:.45;pointer-events:none;';
+  setTimeout(() => success.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
+}
+
+document.getElementById('nombre').addEventListener('animationend', function() { this.classList.remove('shake'); });
+</script>
+</body>
+</html>
