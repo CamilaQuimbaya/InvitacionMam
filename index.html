@@ -970,6 +970,92 @@
       letter-spacing: .4px;
     }
 
+    /* ── MÚSICA ─────────────────────────────── */
+    @keyframes noteFloat {
+      0%   { opacity:0; transform:translateY(0) scale(1) rotate(-10deg); }
+      15%  { opacity:1; }
+      100% { opacity:0; transform:translateY(-42px) scale(.45) rotate(18deg); }
+    }
+    @keyframes musicRing {
+      0%,100% { box-shadow:0 4px 20px rgba(180,80,100,.28); }
+      50%     { box-shadow:0 6px 30px rgba(180,80,100,.52); }
+    }
+    .music-btn {
+      position: fixed;
+      bottom: 28px; left: 20px;
+      z-index: 9990;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.38);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255,255,255,.65);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--darkrose);
+      font-size: 1.25rem;
+      transition: opacity .3s, transform .15s;
+      animation: musicRing 2.6s ease-in-out infinite;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .music-btn:active { transform: scale(.88); }
+    .music-btn.muted  { opacity: .5; }
+
+    /* ── GALERÍA ─────────────────────────────── */
+    .gallery-wrap { margin-bottom: 32px; }
+    .gallery-label {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      font-size: .98rem; color: var(--darkrose);
+      letter-spacing: .8px; opacity: .8;
+      margin-bottom: 16px;
+    }
+    .photo-track {
+      display: flex; gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 6px 4px 16px;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+    .photo-track::-webkit-scrollbar { display: none; }
+    .photo-track:active { cursor: grabbing; }
+    .photo-slot {
+      flex: 0 0 72vw; max-width: 240px; height: 280px;
+      border-radius: 20px; overflow: hidden;
+      scroll-snap-align: center;
+      background: rgba(255,255,255,.22);
+      backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+      border: 1.5px solid rgba(255,255,255,.5);
+      box-shadow: 0 6px 24px rgba(180,80,100,.15);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .photo-slot img { width:100%; height:100%; object-fit:cover; display:block; }
+    .photo-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; width: 100%; height: 100%; opacity: .45;
+    }
+    .photo-placeholder i { font-size: 2.2rem; color: var(--coral); }
+    .photo-placeholder span {
+      font-family:'Cormorant Garamond',serif; font-style:italic;
+      font-size:.9rem; color:var(--darkrose); text-align:center; line-height:1.5;
+    }
+    .gallery-dots { display:flex; justify-content:center; gap:7px; margin-top:4px; }
+    .gallery-dot {
+      width:7px; height:7px; border-radius:50%;
+      background:rgba(212,105,122,.25);
+      transition:background .3s, transform .3s; cursor:pointer;
+    }
+    .gallery-dot.active { background:var(--coral); transform:scale(1.3); }
+    @media (min-width:600px) {
+      .photo-slot { flex: 0 0 200px; height:260px; }
+    }
+
     /* ── DESKTOP ─────────────────────────────── */
     @media (min-width: 600px) {
       body { background-attachment: fixed; }
@@ -1187,6 +1273,34 @@
       </div>
     </div>
 
+    <!-- GALERÍA DE FOTOS -->
+    <div class="gallery-wrap reveal" style="transition-delay:.38s">
+      <p class="gallery-label">✦ momentos con Sandrita ✦</p>
+      <div class="photo-track" id="photoTrack">
+        <div class="photo-slot">
+          <img src="foto1.jpg" alt="Sandrita" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="photo-placeholder" style="display:none"><i class="fa-regular fa-image"></i><span>foto de<br>Sandrita</span></div>
+        </div>
+        <div class="photo-slot">
+          <img src="foto2.jpg" alt="Sandrita" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="photo-placeholder" style="display:none"><i class="fa-regular fa-image"></i><span>foto de<br>Sandrita</span></div>
+        </div>
+        <div class="photo-slot">
+          <img src="foto3.jpg" alt="Sandrita" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="photo-placeholder" style="display:none"><i class="fa-regular fa-image"></i><span>foto de<br>Sandrita</span></div>
+        </div>
+        <div class="photo-slot">
+          <img src="foto4.jpg" alt="Sandrita" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="photo-placeholder" style="display:none"><i class="fa-regular fa-image"></i><span>foto de<br>Sandrita</span></div>
+        </div>
+        <div class="photo-slot">
+          <img src="foto5.jpg" alt="Sandrita" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="photo-placeholder" style="display:none"><i class="fa-regular fa-image"></i><span>foto de<br>Sandrita</span></div>
+        </div>
+      </div>
+      <div class="gallery-dots" id="galleryDots"></div>
+    </div>
+
     <!-- DIVISOR CON FLORECITAS -->
     <div class="divider reveal" style="transition-delay:.26s">
       <div class="flower flower-sm">
@@ -1252,6 +1366,14 @@
   </div>
 
 </div><!-- /card -->
+
+<!-- MÚSICA FLOTANTE -->
+<button class="music-btn muted" id="musicBtn" aria-label="Reproducir música">
+  <i class="fa-solid fa-music"></i>
+</button>
+<audio id="bgMusic" loop preload="auto">
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 /* ── INTRO: quitar con animación o tap ── */
@@ -1532,6 +1654,62 @@ function confirmar(e) {
 }
 
 document.getElementById('nombre').addEventListener('animationend', function() { this.classList.remove('shake'); });
+
+/* ── GALERÍA: dots + scroll ── */
+const track  = document.getElementById('photoTrack');
+const dotsEl = document.getElementById('galleryDots');
+const slots  = Array.from(track.querySelectorAll('.photo-slot'));
+slots.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('pointerdown', () => {
+    slots[i].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+  });
+  dotsEl.appendChild(d);
+});
+const gdots = Array.from(dotsEl.querySelectorAll('.gallery-dot'));
+track.addEventListener('scroll', () => {
+  const center = track.scrollLeft + track.clientWidth / 2;
+  let closest = 0;
+  slots.forEach((s, i) => {
+    if (Math.abs(s.offsetLeft + s.offsetWidth / 2 - center) <
+        Math.abs(slots[closest].offsetLeft + slots[closest].offsetWidth / 2 - center)) closest = i;
+  });
+  gdots.forEach((d, i) => d.classList.toggle('active', i === closest));
+}, { passive: true });
+
+/* ── MÚSICA ── */
+const bgAudio  = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+bgAudio.volume = 0.32;
+
+function syncMusicBtn() {
+  const icon   = musicBtn.querySelector('i');
+  const silent = bgAudio.paused || bgAudio.muted;
+  icon.className = silent ? 'fa-solid fa-music' : 'fa-solid fa-volume-high';
+  musicBtn.classList.toggle('muted', silent);
+}
+
+bgAudio.muted = true;
+bgAudio.play().catch(() => {});
+
+musicBtn.addEventListener('pointerdown', function(e) {
+  e.stopPropagation();
+  if (bgAudio.paused) {
+    bgAudio.muted = false;
+    bgAudio.play().catch(() => {});
+  } else {
+    bgAudio.muted = !bgAudio.muted;
+  }
+  syncMusicBtn();
+  const notes = ['♩','♪','♫','♬'];
+  const r = this.getBoundingClientRect();
+  const note = document.createElement('span');
+  note.style.cssText = `position:fixed;pointer-events:none;z-index:9999;left:${r.left+r.width/2}px;top:${r.top+6}px;font-size:1.1rem;color:#d4697a;animation:noteFloat .9s ease-out forwards;`;
+  note.textContent = notes[Math.floor(Math.random() * notes.length)];
+  document.body.appendChild(note);
+  setTimeout(() => note.remove(), 1000);
+});
 </script>
 </body>
 </html>
