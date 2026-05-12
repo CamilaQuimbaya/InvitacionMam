@@ -128,6 +128,20 @@
       0%   { opacity:.8; transform:translate(-50%,-50%) scale(1); }
       100% { opacity:0;  transform:translate(-50%,-50%) scale(0); }
     }
+    @keyframes twinkle {
+      0%, 100% { opacity:0; transform:scale(0) rotate(0deg); }
+      40%, 60% { opacity:1; transform:scale(1) rotate(20deg); }
+    }
+
+    /* ── DESTELLOS BLANCOS ───────────────────── */
+    .twinkle-dot {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 6;
+      background: radial-gradient(circle, #fff 0%, rgba(255,255,255,.7) 45%, transparent 72%);
+      animation: twinkle var(--dur) var(--delay) ease-in-out infinite;
+    }
     @keyframes heroPetal {
       0%,100% { transform: translateY(0) rotate(var(--base-rot)); }
       50%     { transform: translateY(-5px) rotate(var(--base-rot)); }
@@ -991,6 +1005,21 @@ for (let i = 0; i < (isDesktop ? 80 : 50); i++) {
     `opacity:${.45+Math.random()*.5}`
   ].join(';');
   pc.appendChild(p);
+}
+
+/* ── DESTELLOS BLANCOS ── */
+for (let i = 0; i < 55; i++) {
+  const d = document.createElement('div');
+  d.className = 'twinkle-dot';
+  const size = 2 + Math.random() * 4;
+  d.style.cssText = [
+    `width:${size}px`, `height:${size}px`,
+    `left:${Math.random() * 100}vw`,
+    `top:${Math.random() * 100}vh`,
+    `--dur:${1.2 + Math.random() * 3.5}s`,
+    `--delay:${Math.random() * 5}s`
+  ].join(';');
+  document.body.appendChild(d);
 }
 
 /* ── SCROLL REVEAL ── */
