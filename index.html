@@ -707,6 +707,8 @@
       margin: 0;
     }
     .detail-card.full .detail-label { margin-bottom: 3px; }
+    a.maps-link { text-decoration: none; color: inherit; cursor: pointer; }
+    a.maps-link:visited { color: inherit; }
 
     /* ── DIVISOR ─────────────────────────────── */
     .divider {
@@ -1153,13 +1155,13 @@
         <div class="detail-value">1:30 pm</div>
       </div>
 
-      <div class="detail-card full reveal" style="transition-delay:.19s">
+      <a href="https://maps.app.goo.gl/vBRnJnfGyrGknJ7A6" target="_blank" rel="noopener" class="detail-card full reveal maps-link" style="transition-delay:.19s">
         <div class="detail-icon-wrap"><i class="fa-solid fa-location-dot"></i></div>
         <div>
-          <div class="detail-label">Lugar</div>
+          <div class="detail-label">Lugar <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.7em;opacity:.7;margin-left:.3em;"></i></div>
           <div class="detail-value">Restaurante La Molienda de Tavo</div>
         </div>
-      </div>
+      </a>
     </div>
 
     <!-- COUNTDOWN -->
