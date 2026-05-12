@@ -424,6 +424,7 @@
     /* ── BODY ─────────────────────────────────── */
     .body {
       padding: 30px 22px 26px;
+      position: relative;
       background: rgba(255,255,255,.19);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
@@ -666,6 +667,15 @@
       z-index: 2;
       text-shadow: 0 0 6px rgba(255,200,200,.8);
     }
+    /* destellos dentro de cada sección */
+    .section-spark {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(circle, #fff 0%, rgba(255,255,255,.65) 45%, transparent 70%);
+      animation: twinkle var(--dur) var(--delay) ease-in-out infinite;
+    }
     .btn-confirm {
       width: 100%;
       padding: 18px 20px;
@@ -748,6 +758,7 @@
       border-top: 1px solid rgba(255,255,255,.35);
       padding: 24px 22px calc(24px + env(safe-area-inset-bottom));
       text-align: center;
+      position: relative;
       border-radius: 0 0 30px 30px;
     }
     .footer-flowers {
@@ -1033,14 +1044,22 @@ for (let i = 0; i < (isDesktop ? 80 : 50); i++) {
 /* ── DESTELLITOS EN BOTÓN ── */
 const btnWrap = document.getElementById('btnWrap');
 [
-  {top:'-7px',  left:'15%',  size:5, dur:1.4, delay:0},
-  {top:'-5px',  left:'50%',  size:3, dur:1.8, delay:.4},
-  {top:'-7px',  right:'18%', size:5, dur:1.3, delay:.8},
-  {top:'50%',   left:'-8px', size:4, dur:1.6, delay:.2},
-  {top:'50%',   right:'-8px',size:4, dur:1.5, delay:.6},
-  {bottom:'-7px',left:'20%', size:5, dur:1.7, delay:.3},
-  {bottom:'-5px',left:'55%', size:3, dur:1.4, delay:.9},
-  {bottom:'-7px',right:'15%',size:5, dur:1.6, delay:.5},
+  {top:'-8px',  left:'8%',   size:6, dur:1.4, delay:0},
+  {top:'-6px',  left:'28%',  size:4, dur:1.9, delay:.3},
+  {top:'-8px',  left:'50%',  size:5, dur:1.6, delay:.6},
+  {top:'-6px',  right:'22%', size:4, dur:1.3, delay:.9},
+  {top:'-8px',  right:'6%',  size:6, dur:1.7, delay:.2},
+  {top:'50%',   left:'-9px', size:5, dur:1.5, delay:.4},
+  {top:'25%',   left:'-7px', size:3, dur:2.0, delay:.8},
+  {top:'75%',   left:'-7px', size:3, dur:1.4, delay:.1},
+  {top:'50%',   right:'-9px',size:5, dur:1.6, delay:.5},
+  {top:'25%',   right:'-7px',size:3, dur:1.8, delay:.7},
+  {top:'75%',   right:'-7px',size:3, dur:1.3, delay:.2},
+  {bottom:'-8px',left:'8%',  size:6, dur:1.7, delay:.4},
+  {bottom:'-6px',left:'30%', size:4, dur:1.5, delay:.8},
+  {bottom:'-8px',left:'52%', size:5, dur:1.9, delay:.1},
+  {bottom:'-6px',right:'24%',size:4, dur:1.4, delay:.6},
+  {bottom:'-8px',right:'6%', size:6, dur:1.6, delay:.3},
 ].forEach(({top,left,right,bottom,size,dur,delay}) => {
   const s = document.createElement('div');
   s.className = 'btn-spark';
@@ -1055,14 +1074,38 @@ const btnWrap = document.getElementById('btnWrap');
   btnWrap.appendChild(s);
 });
 
+/* ── DESTELLOS EN SECCIONES ── */
+function addSectionSparks(el, count) {
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'section-spark';
+    const size = 2 + Math.random() * 4;
+    s.style.cssText = [
+      `width:${size}px`, `height:${size}px`,
+      `left:${5 + Math.random() * 90}%`,
+      `top:${5 + Math.random() * 90}%`,
+      `--dur:${1.3 + Math.random() * 3}s`,
+      `--delay:${Math.random() * 4}s`
+    ].join(';');
+    el.appendChild(s);
+  }
+}
+addSectionSparks(document.querySelector('.header'), 18);
+addSectionSparks(document.querySelector('.body'),   28);
+addSectionSparks(document.querySelector('.footer'), 12);
+
 /* ── ESTRELLITAS EN BOTÓN ── */
 [
-  {top:'-14px', left:'30%',  sz:'10px', dur:1.6, delay:.1},
-  {top:'-12px', right:'28%', sz:'8px',  dur:1.9, delay:.7},
-  {top:'42%',   left:'-16px',sz:'9px',  dur:1.5, delay:.4},
-  {top:'42%',   right:'-16px',sz:'9px', dur:1.7, delay:.9},
-  {bottom:'-14px',left:'35%',sz:'10px', dur:1.8, delay:.3},
-  {bottom:'-12px',right:'32%',sz:'8px', dur:1.4, delay:.6},
+  {top:'-16px', left:'18%',  sz:'12px', dur:1.6, delay:.1},
+  {top:'-14px', left:'42%',  sz:'9px',  dur:2.0, delay:.5},
+  {top:'-16px', right:'16%', sz:'12px', dur:1.9, delay:.7},
+  {top:'30%',   left:'-18px',sz:'11px', dur:1.5, delay:.4},
+  {top:'65%',   left:'-16px',sz:'9px',  dur:1.8, delay:.9},
+  {top:'30%',   right:'-18px',sz:'11px',dur:1.7, delay:.2},
+  {top:'65%',   right:'-16px',sz:'9px', dur:1.4, delay:.8},
+  {bottom:'-16px',left:'20%',sz:'12px', dur:1.8, delay:.3},
+  {bottom:'-14px',left:'48%',sz:'9px',  dur:1.6, delay:.6},
+  {bottom:'-16px',right:'18%',sz:'12px',dur:1.5, delay:.0},
 ].forEach(({top,left,right,bottom,sz,dur,delay}) => {
   const s = document.createElement('span');
   s.className = 'btn-star';
