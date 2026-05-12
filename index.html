@@ -271,6 +271,51 @@
       filter: drop-shadow(0 2px 8px rgba(180,80,100,.2));
     }
 
+    /* ── ANIMACIONES DE TAP (mobile) ─────────── */
+    @keyframes tapBounce {
+      0%   { transform: scale(1) rotate(0); }
+      25%  { transform: scale(1.09) rotate(-2deg); }
+      55%  { transform: scale(.96) rotate(1deg); }
+      80%  { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    @keyframes tapSpin {
+      0%   { transform: scale(1) rotate(0); }
+      30%  { transform: scale(1.18) rotate(-12deg); }
+      65%  { transform: scale(1.12) rotate(12deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+    @keyframes tapGlow {
+      0%, 100% { filter: drop-shadow(0 3px 12px rgba(180,80,100,.24)); }
+      50%      { filter: drop-shadow(0 0 28px rgba(212,105,122,.85)) drop-shadow(0 0 8px #ffd0dc); }
+    }
+    @keyframes tapFlip {
+      0%   { transform: rotateY(0) scale(1); }
+      40%  { transform: rotateY(-25deg) scale(1.1); }
+      70%  { transform: rotateY(10deg) scale(1.05); }
+      100% { transform: rotateY(0) scale(1); }
+    }
+    @keyframes tapCardGlow {
+      0%, 100% { box-shadow: 0 4px 30px rgba(0,0,0,.1); }
+      50%  { box-shadow: 0 0 0 3px rgba(212,105,122,.35), 0 8px 32px rgba(180,80,100,.25); }
+    }
+    .tap-bounce { animation: tapBounce .55s cubic-bezier(.34,1.56,.64,1) both !important; }
+    .tap-spin   { animation: tapSpin .6s cubic-bezier(.34,1.56,.64,1) both !important; }
+    .tap-glow   { animation: tapGlow .65s ease-in-out both !important; }
+    .tap-flip   { animation: tapFlip .45s cubic-bezier(.34,1.56,.64,1) both !important; }
+    .tap-card   { animation: tapBounce .5s cubic-bezier(.34,1.56,.64,1) both !important,
+                             tapCardGlow .5s ease-in-out both !important; }
+
+    /* skip hint en intro */
+    .intro-skip {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Raleway', sans-serif;
+      font-size: .7rem; letter-spacing: 3px;
+      text-transform: uppercase; color: rgba(176,77,98,.7);
+      animation: introSlideUp .5s 1.5s both;
+    }
+
     @keyframes heroPetal {
       0%,100% { transform: translateY(0) rotate(var(--base-rot)); }
       50%     { transform: translateY(-5px) rotate(var(--base-rot)); }
@@ -962,6 +1007,7 @@
   <span class="intro-fifty">50</span>
   <h1 class="intro-name">Sandrita</h1>
   <p class="intro-sub">17 de mayo · 2026</p>
+  <span class="intro-skip">toca para continuar</span>
 </div>
 
 <div class="bg-fixed"></div>
@@ -1206,9 +1252,63 @@
 </div><!-- /card -->
 
 <script>
-/* ── INTRO: quitar overlay al terminar animación ── */
+/* ── INTRO: quitar con animación o tap ── */
 const introEl = document.getElementById('introOverlay');
-introEl.addEventListener('animationend', () => introEl.remove(), { once: true });
+function dismissIntro() {
+  introEl.style.animation = 'introFadeOut .4s ease-in-out forwards';
+  introEl.addEventListener('animationend', () => introEl.remove(), { once: true });
+}
+introEl.addEventListener('animationend', dismissIntro, { once: true });
+introEl.addEventListener('pointerdown', dismissIntro, { once: true });
+
+/* ── TAP INTERACTIONS ── */
+function tapAnim(el, cls, ms = 600) {
+  el.classList.remove(cls); void el.offsetWidth;
+  el.classList.add(cls);
+  setTimeout(() => el.classList.remove(cls), ms);
+}
+
+/* 50: gira + confetti */
+document.querySelector('.fifty-number')?.addEventListener('pointerdown', function(e) {
+  tapAnim(this, 'tap-spin', 600);
+  const r = this.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2);
+});
+
+/* Sandrita: brilla + corazones volando */
+document.querySelector('.name')?.addEventListener('pointerdown', function() {
+  tapAnim(this, 'tap-glow', 650);
+  const r = this.getBoundingClientRect();
+  for (let i = 0; i < 7; i++) setTimeout(() => {
+    const h = document.createElement('div');
+    h.className = 'float-heart';
+    const dur = (.7 + Math.random() * .5).toFixed(2);
+    const del = (i * .07).toFixed(2);
+    h.style.cssText = `left:${r.left + Math.random() * r.width}px;top:${r.top + r.height * .5}px;font-size:${10 + Math.random() * 12}px;color:${Math.random() > .5 ? '#e8a0b0' : '#d4697a'};--dur:${dur}s;--delay:${del}s;`;
+    h.textContent = '♥';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), (parseFloat(dur) + parseFloat(del)) * 1000 + 200);
+  }, i * 60);
+});
+
+/* Badge: rebota */
+document.querySelector('.years-badge')?.addEventListener('pointerdown', function() {
+  tapAnim(this, 'tap-bounce', 550);
+});
+
+/* Detail cards: rebota + brillo de borde */
+document.querySelectorAll('.detail-card').forEach(card => {
+  card.addEventListener('pointerdown', function(e) {
+    tapAnim(this, 'tap-card', 500);
+  });
+});
+
+/* Countdown items: flip */
+document.querySelectorAll('.countdown-item').forEach(item => {
+  item.addEventListener('pointerdown', function() {
+    tapAnim(this, 'tap-flip', 450);
+  });
+});
 
 /* ── COUNTDOWN ── */
 function updateCountdown() {
