@@ -168,6 +168,109 @@
       background: radial-gradient(circle, #fff 0%, rgba(255,255,255,.7) 45%, transparent 72%);
       animation: twinkle var(--dur) var(--delay) ease-in-out infinite;
     }
+    /* ── INTRO OVERLAY ───────────────────────── */
+    @keyframes introReveal {
+      0%   { opacity: 0; transform: scale(.92); }
+      30%  { opacity: 1; transform: scale(1); }
+      75%  { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.04); }
+    }
+    @keyframes introSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes introFadeOut {
+      from { opacity: 1; pointer-events: all; }
+      to   { opacity: 0; pointer-events: none; }
+    }
+    .intro-overlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background-image: url('./background.png');
+      background-size: cover; background-position: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0;
+      animation: introFadeOut .7s 2.8s ease-in-out forwards;
+    }
+    .intro-fifty {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(9rem, 42vw, 15rem);
+      line-height: 1.15; padding-top: .1em;
+      background: linear-gradient(135deg, #b04d62, #d4697a, #e8758a, #b04d62);
+      background-size: 300%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 16px rgba(180,80,100,.25));
+      animation: introReveal 2.8s ease-in-out forwards,
+                 nameShimmer 4s 1s ease-in-out infinite;
+    }
+    .intro-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 14vw, 5rem);
+      line-height: 1.25; padding-top: .1em;
+      background: linear-gradient(135deg, #b04d62, #d4697a, #e8758a, #b04d62);
+      background-size: 300%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 8px rgba(180,80,100,.2));
+      animation: introSlideUp .7s .5s both,
+                 nameShimmer 4s 1s ease-in-out infinite;
+    }
+    .intro-sub {
+      font-family: 'Raleway', sans-serif;
+      font-size: .7rem; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--darkrose);
+      opacity: .8; margin-top: 12px;
+      animation: introSlideUp .6s .9s both;
+    }
+
+    /* ── COUNTDOWN ───────────────────────────── */
+    @keyframes cdPulse {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.06); }
+    }
+    .countdown-wrap {
+      text-align: center;
+      margin: 32px 0 8px;
+    }
+    .countdown-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      font-size: 1rem; color: var(--darkrose);
+      letter-spacing: 3px; text-transform: lowercase;
+      opacity: .8; margin-bottom: 14px;
+    }
+    .countdown-grid {
+      display: flex; justify-content: center; gap: 10px;
+    }
+    .countdown-item {
+      background: rgba(255,255,255,.28);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 16px;
+      padding: 14px 10px 10px;
+      min-width: 68px;
+      display: flex; flex-direction: column; align-items: center;
+      box-shadow: 0 4px 20px rgba(180,80,100,.1);
+    }
+    .countdown-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 600;
+      line-height: 1; color: var(--darkrose);
+      animation: cdPulse 1s ease-in-out infinite;
+    }
+    .countdown-unit {
+      font-family: 'Raleway', sans-serif;
+      font-size: .6rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--coral);
+      margin-top: 5px; opacity: .85;
+    }
+    .countdown-done {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem; color: var(--darkrose);
+      filter: drop-shadow(0 2px 8px rgba(180,80,100,.2));
+    }
+
     @keyframes heroPetal {
       0%,100% { transform: translateY(0) rotate(var(--base-rot)); }
       50%     { transform: translateY(-5px) rotate(var(--base-rot)); }
@@ -854,6 +957,13 @@
 </head>
 <body>
 
+<!-- ══ INTRO ══════════════════════════════════════ -->
+<div class="intro-overlay" id="introOverlay">
+  <span class="intro-fifty">50</span>
+  <h1 class="intro-name">Sandrita</h1>
+  <p class="intro-sub">17 de mayo · 2026</p>
+</div>
+
 <div class="bg-fixed"></div>
 <div id="twinkles"></div>
 <div class="petal-container" id="petals"></div>
@@ -1006,6 +1116,29 @@
       </div>
     </div>
 
+    <!-- COUNTDOWN -->
+    <div class="countdown-wrap reveal" id="countdownWrap" style="transition-delay:.3s">
+      <p class="countdown-label">✦ faltan ✦</p>
+      <div class="countdown-grid">
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-days">00</span>
+          <span class="countdown-unit">días</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-hours">00</span>
+          <span class="countdown-unit">horas</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-mins">00</span>
+          <span class="countdown-unit">minutos</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-secs">00</span>
+          <span class="countdown-unit">segundos</span>
+        </div>
+      </div>
+    </div>
+
     <!-- DIVISOR CON FLORECITAS -->
     <div class="divider reveal" style="transition-delay:.26s">
       <div class="flower flower-sm">
@@ -1073,6 +1206,31 @@
 </div><!-- /card -->
 
 <script>
+/* ── INTRO: quitar overlay al terminar animación ── */
+const introEl = document.getElementById('introOverlay');
+introEl.addEventListener('animationend', () => introEl.remove(), { once: true });
+
+/* ── COUNTDOWN ── */
+function updateCountdown() {
+  const target = new Date('2026-05-17T13:30:00-05:00');
+  const diff = target - new Date();
+  if (diff <= 0) {
+    document.getElementById('countdownWrap').innerHTML =
+      '<p class="countdown-done">¡Hoy es el gran día! 🎉</p>';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
 /* ── PÉTALOS DE FONDO ── */
 const isDesktop = window.matchMedia('(min-width:600px)').matches;
 const pColors = ['#e8a0b0','#f7c5d0','#d4697a','#f9b8c8','#c77a8a','#f0d0d8'];
