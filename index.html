@@ -272,8 +272,8 @@
     /* ── HEADER ──────────────────────────────── */
     .header {
       background: rgba(255,255,255,.22);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       padding: 40px 24px 32px;
       text-align: center;
       position: relative;
@@ -314,46 +314,27 @@
       animation: fadeUp .6s .3s both;
     }
 
-    /* flores hero */
-    .hero-flower-wrap {
-      display: block;
+    /* "50" display */
+    .hero-number-wrap {
       text-align: center;
       width: 100%;
-      position: relative;
-      z-index: 2;
-      margin-bottom: -30px;
+      margin-bottom: 2px;
       animation: fadeUp .7s .4s both;
     }
 
-    .fifty-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 0;
-      line-height: 1;
-      isolation: isolate;
-    }
-
-    .fifty-five {
+    .fifty-number {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(7rem, 32vw, 10rem);
+      font-size: clamp(8.5rem, 40vw, 14rem);
       font-weight: 400;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--darkrose), var(--coral), #e0556e, var(--darkrose));
+      line-height: 0.88;
+      display: block;
+      background: linear-gradient(135deg, var(--darkrose) 0%, var(--coral) 35%, #e8758a 60%, var(--darkrose) 100%);
       background-size: 300%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      /* sin filter — crea stacking context y rompe z-index */
-      animation: nameShimmer 5s 1.2s ease-in-out infinite;
-      letter-spacing: -0.12em;
-      margin-bottom: -8px;
-      order: -1;   /* aparece a la izquierda visualmente */
-      z-index: 2;  /* sobre la flor — funciona en flex sin position */
-    }
-
-    .fifty-wrap .flower-hero {
-      flex-shrink: 0;
-      z-index: 1;
+      filter: drop-shadow(0 4px 14px rgba(180,80,100,.22));
+      animation: fadeUp .7s .4s both, nameShimmer 6s 1s ease-in-out infinite;
     }
 
     .name {
@@ -408,8 +389,8 @@
     .body {
       padding: 30px 22px 26px;
       background: rgba(255,255,255,.19);
-      backdrop-filter: blur(7.1px);
-      -webkit-backdrop-filter: blur(7.1px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
 
     .invitation-text {
@@ -444,8 +425,8 @@
 
     .detail-card {
       background: rgba(255,255,255,.19);
-      backdrop-filter: blur(7.1px);
-      -webkit-backdrop-filter: blur(7.1px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       border: 1px solid rgba(255,255,255,.3);
       box-shadow: 0 4px 30px rgba(0,0,0,.1);
       border-radius: 22px;
@@ -572,8 +553,8 @@
       font-family: 'Raleway', sans-serif;
       color: var(--text);
       background: rgba(255,255,255,.45);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       outline: none;
       -webkit-appearance: none; appearance: none;
       transition: border-color .25s, box-shadow .25s, background .25s;
@@ -703,8 +684,8 @@
     /* ── FOOTER ──────────────────────────────── */
     .footer {
       background: rgba(255,255,255,.22);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       border-top: 1px solid rgba(255,255,255,.35);
       padding: 24px 22px calc(24px + env(safe-area-inset-bottom));
       text-align: center;
@@ -767,22 +748,9 @@
   <div class="header">
     <p class="subtitle-top">Te invitamos a celebrar</p>
 
-    <!-- "50" = número + flor -->
-    <div class="hero-flower-wrap">
-      <div class="fifty-wrap">
-        <div class="flower flower-hero" id="heroFlower">
-        <div class="fpetal fpetal1"></div>
-        <div class="fpetal fpetal2"></div>
-        <div class="fpetal fpetal3"></div>
-        <div class="fpetal fpetal4"></div>
-        <div class="fpetal fpetal5"></div>
-        <div class="fpetal fpetal6"></div>
-        <div class="fpetal fpetal7"></div>
-        <div class="fpetal fpetal8"></div>
-        <div class="fcenter"></div>
-      </div>
-      <span class="fifty-five">5</span>
-      </div><!-- /fifty-wrap -->
+    <!-- "50" display -->
+    <div class="hero-number-wrap">
+      <span class="fifty-number">50</span>
     </div>
 
     <h1 class="name">Sandra</h1>
