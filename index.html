@@ -656,6 +656,16 @@
       animation: twinkle var(--dur) var(--delay) ease-in-out infinite;
       z-index: 2;
     }
+    .btn-star {
+      position: absolute;
+      pointer-events: none;
+      color: rgba(255,255,255,.9);
+      font-size: var(--sz);
+      line-height: 1;
+      animation: sparkletwinkle var(--dur) var(--delay) ease-in-out infinite;
+      z-index: 2;
+      text-shadow: 0 0 6px rgba(255,200,200,.8);
+    }
     .btn-confirm {
       width: 100%;
       padding: 18px 20px;
@@ -1041,6 +1051,28 @@ const btnWrap = document.getElementById('btnWrap');
     left   !== undefined ? `left:${left}`     : '',
     right  !== undefined ? `right:${right}`   : '',
     `--dur:${dur}s`, `--delay:${delay}s`
+  ].filter(Boolean).join(';');
+  btnWrap.appendChild(s);
+});
+
+/* ── ESTRELLITAS EN BOTÓN ── */
+[
+  {top:'-14px', left:'30%',  sz:'10px', dur:1.6, delay:.1},
+  {top:'-12px', right:'28%', sz:'8px',  dur:1.9, delay:.7},
+  {top:'42%',   left:'-16px',sz:'9px',  dur:1.5, delay:.4},
+  {top:'42%',   right:'-16px',sz:'9px', dur:1.7, delay:.9},
+  {bottom:'-14px',left:'35%',sz:'10px', dur:1.8, delay:.3},
+  {bottom:'-12px',right:'32%',sz:'8px', dur:1.4, delay:.6},
+].forEach(({top,left,right,bottom,sz,dur,delay}) => {
+  const s = document.createElement('span');
+  s.className = 'btn-star';
+  s.textContent = '✦';
+  s.style.cssText = [
+    top    !== undefined ? `top:${top}`       : '',
+    bottom !== undefined ? `bottom:${bottom}` : '',
+    left   !== undefined ? `left:${left}`     : '',
+    right  !== undefined ? `right:${right}`   : '',
+    `--sz:${sz}`, `--dur:${dur}s`, `--delay:${delay}s`
   ].filter(Boolean).join(';');
   btnWrap.appendChild(s);
 });
