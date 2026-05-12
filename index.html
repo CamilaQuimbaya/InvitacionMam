@@ -1690,13 +1690,19 @@ function syncMusicBtn() {
   musicBtn.classList.toggle('muted', silent);
 }
 
-bgAudio.muted = true;
-bgAudio.play().catch(() => {});
+bgAudio.muted = false;
+// Intenta autoplay; si el navegador lo bloquea, arranca en el primer toque
+bgAudio.play().catch(() => {
+  document.addEventListener('pointerdown', function startAudio() {
+    bgAudio.play().catch(() => {});
+    syncMusicBtn();
+  }, { once: true });
+});
+syncMusicBtn();
 
 musicBtn.addEventListener('pointerdown', function(e) {
   e.stopPropagation();
   if (bgAudio.paused) {
-    bgAudio.muted = false;
     bgAudio.play().catch(() => {});
   } else {
     bgAudio.muted = !bgAudio.muted;
