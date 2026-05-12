@@ -1627,29 +1627,6 @@ function confirmar(e) {
 
 document.getElementById('nombre').addEventListener('animationend', function() { this.classList.remove('shake'); });
 
-/* ── GALERÍA: dots + scroll ── */
-const track  = document.getElementById('photoTrack');
-const dotsEl = document.getElementById('galleryDots');
-const slots  = Array.from(track.querySelectorAll('.photo-slot'));
-slots.forEach((_, i) => {
-  const d = document.createElement('div');
-  d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-  d.addEventListener('pointerdown', () => {
-    slots[i].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
-  });
-  dotsEl.appendChild(d);
-});
-const gdots = Array.from(dotsEl.querySelectorAll('.gallery-dot'));
-track.addEventListener('scroll', () => {
-  const center = track.scrollLeft + track.clientWidth / 2;
-  let closest = 0;
-  slots.forEach((s, i) => {
-    if (Math.abs(s.offsetLeft + s.offsetWidth / 2 - center) <
-        Math.abs(slots[closest].offsetLeft + slots[closest].offsetWidth / 2 - center)) closest = i;
-  });
-  gdots.forEach((d, i) => d.classList.toggle('active', i === closest));
-}, { passive: true });
-
 /* ── MÚSICA ── */
 const bgAudio  = document.getElementById('bgMusic');
 const musicBtn = document.getElementById('musicBtn');
