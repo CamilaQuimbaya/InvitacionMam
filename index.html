@@ -27,15 +27,22 @@
     body {
       font-family: 'Raleway', sans-serif;
       background-color: var(--cream);
-      background-image: url('./background.png');
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
-      background-attachment: scroll; /* fixed causa bugs en iOS */
       color: var(--text);
       min-height: 100dvh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* fondo fijo: cubre exactamente la pantalla en todo dispositivo,
+       incluyendo iOS donde background-attachment:fixed falla */
+    .bg-fixed {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image: url('./background.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
     }
 
     button, input, select, a {
@@ -751,6 +758,7 @@
 </head>
 <body>
 
+<div class="bg-fixed"></div>
 <div class="petal-container" id="petals"></div>
 
 <div class="card">
