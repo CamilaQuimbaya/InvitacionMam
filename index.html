@@ -553,7 +553,14 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       filter: drop-shadow(0 3px 12px rgba(180,80,100,.24));
-      animation: fadeUp .7s .55s both, nameShimmer 5s 1.2s ease-in-out infinite;
+      -webkit-mask-image: linear-gradient(to right, #000, #000);
+      mask-image: linear-gradient(to right, #000, #000);
+      -webkit-mask-size: 0% 100%;
+      mask-size: 0% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      animation: fadeUp .7s .55s both, nameShimmer 5s 1.2s ease-in-out infinite,
+                 revealName 2.5s .55s ease-out forwards;
     }
 
     .years-badge {
@@ -1056,6 +1063,77 @@
       .photo-slot { flex: 0 0 200px; height:260px; }
     }
 
+    /* ── BLOOM FLOWER ────────────────────────── */
+    @keyframes bloomPetal {
+      from { transform: rotate(var(--rot)) translateY(0%)   scale(0);    opacity: 0; }
+      65%  { transform: rotate(var(--rot)) translateY(-50%) scale(1.2);  opacity: 1; }
+      to   { transform: rotate(var(--rot)) translateY(-50%) scale(1);    opacity: 1; }
+    }
+    @keyframes bloomCenter {
+      from { transform: scale(0);    opacity: 0; }
+      65%  { transform: scale(1.25); opacity: 1; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+    .bloom-flower .fpetal {
+      animation: bloomPetal .9s var(--bd, 0s) cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .bloom-flower .fcenter {
+      animation: bloomCenter .7s .44s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    /* ── ESCRITURA DE NOMBRE ─────────────────── */
+    .name-write-wrap { position: relative; display: block; text-align: center; }
+    @keyframes revealName {
+      from { -webkit-mask-size: 0%    100%; mask-size: 0%    100%; }
+      to   { -webkit-mask-size: 115%  100%; mask-size: 115%  100%; }
+    }
+    .name-brush {
+      position: absolute; top: 8%; bottom: 8%; left: 0;
+      width: 4px; border-radius: 3px;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(249,200,120,1) 30%,
+        rgba(255,170,70,.9) 70%,
+        transparent 100%);
+      filter: blur(1.5px);
+      box-shadow: 0 0 10px 5px rgba(249,200,120,.55),
+                  0 0 26px 10px rgba(249,180,70,.25);
+      pointer-events: none;
+      animation: brushSweep 2.5s .55s cubic-bezier(.4,0,.2,1) forwards;
+      opacity: 0;
+    }
+    @keyframes brushSweep {
+      0%   { left:   0%; opacity: 0; }
+      4%   { left:   2%; opacity: 1; }
+      92%  { left:  98%; opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+
+    /* ── SVG PÉTALOS CON MORPHING ─────────────── */
+    @keyframes svgPetalFall {
+      0%   { transform: translateY(0)     rotate(0deg)                    scale(1);   opacity: .75; }
+      100% { transform: translateY(115vh) rotate(var(--fall-rot, 400deg)) scale(.65); opacity: 0;   }
+    }
+    @keyframes svgMorph {
+      0%, 52% {
+        d: path('M 10 0 C 18 0 20 7 20 13 C 20 22 16 28 10 30 C 4 28 0 22 0 13 C 0 7 2 0 10 0 Z');
+        fill: var(--pc);
+      }
+      76% {
+        d: path('M 10 7 C 12 1 20 1 20 9 C 20 17 14 22 10 28 C 6 22 0 17 0 9 C 0 1 8 1 10 7 Z');
+        fill: var(--hc); opacity: .9;
+      }
+      100% {
+        d: path('M 10 7 C 12 1 20 1 20 9 C 20 17 14 22 10 28 C 6 22 0 17 0 9 C 0 1 8 1 10 7 Z');
+        fill: var(--hc); opacity: 0;
+      }
+    }
+    .svg-petal-wrap {
+      position: absolute; top: -45px;
+      pointer-events: none; z-index: 10;
+      animation: svgPetalFall linear infinite;
+    }
+
     /* ── DESKTOP ─────────────────────────────── */
     @media (min-width: 600px) {
       body { background-attachment: fixed; }
@@ -1106,6 +1184,19 @@
 
   <!-- ═══ HEADER ═══════════════════════════════ -->
   <div class="header">
+    <!-- FLOR QUE FLORECE -->
+    <div class="flower flower-hero bloom-flower" aria-hidden="true">
+      <div class="fpetal" style="--rot:0deg;   --bd:.02s"></div>
+      <div class="fpetal" style="--rot:45deg;  --bd:.08s"></div>
+      <div class="fpetal" style="--rot:90deg;  --bd:.14s"></div>
+      <div class="fpetal" style="--rot:135deg; --bd:.20s"></div>
+      <div class="fpetal" style="--rot:180deg; --bd:.26s"></div>
+      <div class="fpetal" style="--rot:225deg; --bd:.32s"></div>
+      <div class="fpetal" style="--rot:270deg; --bd:.38s"></div>
+      <div class="fpetal" style="--rot:315deg; --bd:.44s"></div>
+      <div class="fcenter"></div>
+    </div>
+
     <p class="subtitle-top">Acompáñanos a celebrar</p>
 
     <!-- "50 años" display -->
@@ -1114,7 +1205,10 @@
       <span class="fifty-years">años</span>
     </div>
 
-    <h1 class="name">Sandrita</h1>
+    <div class="name-write-wrap">
+      <h1 class="name">Sandrita</h1>
+      <div class="name-brush" aria-hidden="true"></div>
+    </div>
 
     <div class="years-badge">
       <svg class="sparkle" viewBox="0 0 24 24"><path d="M12 2 13.8 9.2 21 12 13.8 14.8 12 22 10.2 14.8 3 12 10.2 9.2Z"/></svg>
@@ -1445,6 +1539,22 @@ for (let i = 0; i < (isDesktop ? 80 : 50); i++) {
     `opacity:${.45+Math.random()*.5}`
   ].join(';');
   pc.appendChild(p);
+}
+
+/* ── SVG PÉTALOS CON MORPHING ── */
+const svgPColors = ['#e8a0b0','#f7c5d0','#d4697a','#f9b8c8','#c77a8a'];
+const svgHColors = ['#d4697a','#b04d62','#c77a8a','#e8a0b0','#d46070'];
+for (let i = 0; i < (isDesktop ? 14 : 7); i++) {
+  const dur = 7 + Math.random() * 9;
+  const del = -(Math.random() * dur);
+  const rot = (220 + Math.random() * 340).toFixed(0);
+  const sz  = 12 + Math.random() * 16;
+  const ci  = Math.floor(Math.random() * svgPColors.length);
+  const wrap = document.createElement('div');
+  wrap.className = 'svg-petal-wrap';
+  wrap.style.cssText = `left:${Math.random()*100}%;--fall-rot:${rot}deg;--pc:${svgPColors[ci]};--hc:${svgHColors[ci]};animation-duration:${dur.toFixed(2)}s;animation-delay:${del.toFixed(2)}s`;
+  wrap.innerHTML = `<svg width="${sz.toFixed(0)}" height="${(sz*1.5).toFixed(0)}" viewBox="0 0 20 30" style="overflow:visible;display:block"><path fill="${svgPColors[ci]}" d="M 10 0 C 18 0 20 7 20 13 C 20 22 16 28 10 30 C 4 28 0 22 0 13 C 0 7 2 0 10 0 Z" style="animation:svgMorph ${dur.toFixed(2)}s ${del.toFixed(2)}s linear infinite"/></svg>`;
+  pc.appendChild(wrap);
 }
 
 /* ── DESTELLITOS EN BOTÓN ── */
